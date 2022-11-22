@@ -19,7 +19,7 @@ def login():
     # request has access to that
     auth = request.authorization
     if not auth:
-        return "missing credentials", 401
+        return "Missing Credentials", 401
 
     # Check db for username and password
     cur = mysql.connection.cursor()
@@ -39,3 +39,26 @@ def login():
     else:
         return "invalid credentials", 401
 
+def createJWT(username, secret, is_admin):
+    return jwt.encode(
+        {
+            "username": username,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc)
+            + datetime.timedelta(days=1),
+            "iat": datetime.datetime.utcnow(),
+            "admin": is_admin
+        },
+        secret,
+        algorithm="HS256",
+    )
+
+@server.route("/validate", method=["POST"])
+def validate():
+    # the jwt token will be in Authorization headers
+    encoded_jwt = request.headers['Authorization']
+
+    if not encoded_jwt:
+        return "Missing Credentials", 401
+    
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=5000)
