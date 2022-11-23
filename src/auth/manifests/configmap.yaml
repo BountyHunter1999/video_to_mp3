@@ -1,0 +1,14 @@
+# for less sensitive data
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-configmap
+data:
+# these are the env variables that will be automatically exported
+# to our shell when we do the deployment
+# access to local host 
+  # MYSQL_HOST: host.minikube.internal
+  MYSQL_HOST: mysql
+  MYSQL_USER: auth_user
+  MYSQL_DB: auth
+  MYSQL_PORT: "3306"

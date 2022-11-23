@@ -1,5 +1,5 @@
 -- USER FOR OUR DB, to access mysql database
-CREATE USER 'auth_user'@'localhost' IDENTIFIED BY 'Aauth123';
+CREATE USER 'auth_user'@'localhost' IDENTIFIED BY 'Auth123';
 
 CREATE DATABASE auth;
 

@@ -13,6 +13,14 @@ server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
 server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
 server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
 
+print(server.config)
+print("We are working...")
+
+
+@server.route("/")
+def hello():
+    return "<h1> Hello to my app </h1>"
+
 
 @server.route("/login", methods=["POST"])
 def login():
@@ -56,7 +64,7 @@ def createJWT(username, secret, is_admin):
     )
 
 
-@server.route("/validate", method=["POST"])
+@server.route("/validate", methods=["POST"])
 def validate():
     # the jwt token will be in Authorization headers
     encoded_jwt = request.headers['Authorization']
