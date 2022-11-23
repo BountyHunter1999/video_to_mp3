@@ -2,6 +2,7 @@ import jwt, datetime, os
 from flask import Flask, request
 from flask_mysqldb import MySQL
 
+
 server = Flask(__name__)
 mysql = MySQL(server)
 
@@ -11,6 +12,7 @@ server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
 server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
 server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
 server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
+
 
 @server.route("/login", methods=["POST"])
 def login():
@@ -39,6 +41,7 @@ def login():
     else:
         return "invalid credentials", 401
 
+
 def createJWT(username, secret, is_admin):
     return jwt.encode(
         {
@@ -52,6 +55,7 @@ def createJWT(username, secret, is_admin):
         algorithm="HS256",
     )
 
+
 @server.route("/validate", method=["POST"])
 def validate():
     # the jwt token will be in Authorization headers
@@ -59,6 +63,19 @@ def validate():
 
     if not encoded_jwt:
         return "Missing Credentials", 401
-    
+
+    # Bearer <token>
+    encoded_jwt = encoded_jwt.split(" ")[1]
+
+    try:
+        decoded = jwt.decode(
+            encoded_jwt, os.environ.get("JWT_SECRET"), algorithms=["HS256"]
+        )
+    except:
+        return "Not authorized", 403
+
+    return decoded, 200
+
+
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=5000)
