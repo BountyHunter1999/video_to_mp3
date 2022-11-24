@@ -1,0 +1,6 @@
+jedi
+pylint
+pika
+flask
+pyMongo
+Flask-PyMongo
