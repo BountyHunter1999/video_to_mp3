@@ -1,5 +1,8 @@
 # gridfs allows us to store large files in mongodb
-import os, gridfs, pika, json
+import os
+import gridfs
+import pika
+import json
 from flask import Flask, request
 from flask_pymongo import PyMongo
 
@@ -22,11 +25,20 @@ mongo = PyMongo(server)
 fs = gridfs.GridFS(mongo.db)
 
 #  make connection with our rabittmq queue synchronous
-connection = pika.BlockingConnection(pika.ConnectionParameters(
-    "rabbitmq"
-))
+connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
 channel = connection.channel()
+
 
 @server.route("/login", methods=["POST"])
 def login():
     token, err = access.login(request)
+
+    if not err:
+        return token
+    else:
+        return err
+
+
+@server.route("/upload", methods=["POST"])
+def upload():
+    access, err = validate.token(request)
