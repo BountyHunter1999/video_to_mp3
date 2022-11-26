@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  selector:
+    app: gateway
+  # will have internal ip address that is available
+  # only within our cluster
+  # to be able to access it from outside our cluster we'll
+  # need ingress to route traffic to our actual gateway service
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP

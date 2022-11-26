@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+data:
+# in k8s the service name will resolve to that that service's
+# host IP address
+  AUTH_SVC_ADDRESS: "auth:5000"
