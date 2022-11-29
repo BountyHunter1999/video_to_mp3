@@ -35,6 +35,13 @@
         - `minikube addons enable ingress`
 - whenever we want to run this microservice architecture we're going to run `minikube tunnel` command
 
+## for rabbitmq management GUI access
+
+- make sure minikube is running
+- `sudo nano /etc/hosts`
+- map the loop back address `127.0.0.1` (local host also resolves to this) to mp3converter.com
+        - `127.0.0.1       rabbitmq-manager.com`
+
 ## important commands
 
 - to scale down `kubectl scale deployment --replicas=0 gateway`

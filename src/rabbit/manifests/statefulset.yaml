@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+  # # we won't use this
+  serviceName: "not-applicable"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+        # management has the GUI to manage the queues
+          image: rabbitmq:3-management
+          ports:
+          # port to access the GUI
+            - containerPort: 15672
+              name: http
+              protocol: TCP
+          # port that handles actual messages
+          # advanced message queuing protocol
+          # protocol to send messages to queue
+            - name: amqp
+              protocol: TCP
+              containerPort: 5672
+          envFrom:
+            - configMapRef:
+                name: rabbitmq-configmap
+            - secretRef:
+                name: rabbitmq-secret
+          volumeMounts:
+            - name: rabbitmq-volume
+            # path within the container that we want mounted
+            # rabbitmq server is going to store the persisted data like the
+            # messages and queues in this directory
+              mountPath: /var/lib/rabbitmq
+      volumes:
+        - name: rabbitmq-volume
+          persistentVolumeClaim:
+            claimName: rabbitmq-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

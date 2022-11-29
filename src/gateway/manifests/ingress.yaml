@@ -15,7 +15,7 @@ metadata:
     name: myingress
 spec:
   rules:
-  # route request to this host
+  # how k8s cluster knows we're making a request to this host 
   # request to this host on our local machine gets routed to the
   # local host, map this hostname to localhost on our local machine
   # and tunnel requests to our local host to minicube
