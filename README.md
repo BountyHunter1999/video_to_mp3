@@ -41,6 +41,8 @@
 - `sudo nano /etc/hosts`
 - map the loop back address `127.0.0.1` (local host also resolves to this) to mp3converter.com
         - `127.0.0.1       rabbitmq-manager.com`
+- `kubectl port-forward services/rabbitmq 15672:15672` if nothing works we can do this too
+        - pwd and username both are guest
 
 ## important commands
 

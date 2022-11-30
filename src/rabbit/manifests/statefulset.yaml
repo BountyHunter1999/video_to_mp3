@@ -8,7 +8,6 @@ spec:
       app: rabbitmq
   # # we won't use this
   serviceName: "not-applicable"
-  replicas: 2
   template:
     metadata:
       labels:
@@ -39,16 +38,9 @@ spec:
             # path within the container that we want mounted
             # rabbitmq server is going to store the persisted data like the
             # messages and queues in this directory
-              mountPath: /var/lib/rabbitmq
+              mountPath: "/var/lib/rabbitmq"
       volumes:
         - name: rabbitmq-volume
           persistentVolumeClaim:
             claimName: rabbitmq-pvc
-  volumeClaimTemplates:
-    - metadata:
-        name: www
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 1Gi
+

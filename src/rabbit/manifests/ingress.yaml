@@ -10,10 +10,10 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: /
         backend:
           service:
             name: rabbitmq
             port: 
-            # port number for rabbitmq management console
               number: 15672
+            # port number for rabbitmq management console
