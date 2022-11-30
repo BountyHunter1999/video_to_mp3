@@ -35,7 +35,7 @@ spec:
           - mountPath: /docker-entrypoint-initdb.d
             name: mysql-initdb
           - mountPath: "/var/lib/mysql"
-            subpath: "mysql"
+            # subpath: "mysql"
             name: mysql-persistent-storage
       volumes:
         - name: mysql-initdb
