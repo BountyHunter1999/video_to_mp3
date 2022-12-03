@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  labels:
+    app: mongo_db
+spec:
+  selector:
+    matchLabels:
+      app: mongo_db
+  template:
+    metadata:
+      labels:
+        app: mongo_db
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:latest
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: auth-secret
+                key: MYSQL_PASSWORD
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3306
+          name: mp3-mysql
+        volumeMounts:
+          - mountPath: "/var/lib/mongo"
+            name: mongo-persistent-storage
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  labels:
+    app: mongo_db
+spec:
+  selector:
+    app: mongo_db
+  ports:
+  - port: 27017
+    targetPort: 27017
+    protocol: TCP
+  type: NodePort
+
+

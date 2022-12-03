@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "{ PWD}/data"
+    path: "{ PWD }/data"
 
 ---
 apiVersion: v1
