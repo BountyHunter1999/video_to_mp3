@@ -47,3 +47,12 @@
 ## important commands
 
 - to scale down `kubectl scale deployment --replicas=0 gateway`
+
+## Connect to mysql
+
+- `kubectl get pod` to get the pod name
+- `kubectl exec -it pods/mysql-59bcb9bdc7-bc66c bash` get inside the pod
+- `mysql -u auth_user auth -p` a prompt appears to enter the password
+- `SHOW DATABASES` to see the available databases
+- `SHOW TABLES` to see the available tables
+- `SELECT * FROM user` to see the available user in the table user
