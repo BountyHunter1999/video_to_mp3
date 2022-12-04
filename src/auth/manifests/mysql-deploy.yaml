@@ -5,6 +5,7 @@ metadata:
   name: mysql
   labels:
     app: db
+    tier: database
 spec:
   selector:
     matchLabels:
@@ -15,50 +16,114 @@ spec:
         app: db
     spec:
       containers:
-      - name: mysql
-        image: mysql:latest
-        env:
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: auth-secret
-                key: MYSQL_PASSWORD
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 3306
-          name: mp3-mysql
-        volumeMounts:
+        - name: mysql
+          image: mysql:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: MYSQL_ROOT_PASSWORD
+          # resources:
+          #   limits:
+          #     memory: "128Mi"
+          #     cpu: "600m"
+          ports:
+            - containerPort: 3306
+              name: mp3-mysql
+          volumeMounts:
             #  inside container
-          - mountPath: /docker-entrypoint-initdb.d
-            name: mysql-initdb
-          - mountPath: "/var/lib/mysql"
-            # subpath: "mysql"
-            name: mysql-persistent-storage
+            - mountPath: "/docker-entrypoint-initdb.d/"
+              name: mysql-initdb
+
+            - mountPath: "/var/lib/mysql/"
+              # subpath: "mysql"
+              name: mysql-pv-claim
       volumes:
         - name: mysql-initdb
-          persistentVolumeClaim:
-            claimName: mysql-initdb-pv-claim
-        - name: mysql-persistent-storage
+          configMap:
+            name: mysql-initdb-configmap
+
+        - name: mysql-pv-claim
           persistentVolumeClaim:
             claimName: mysql-pv-claim
 
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mysql
+#   labels:
+#     app: db
+# spec:
+#   selector:
+#     app: db
+#   ports:
+#     - port: 3306
+#       targetPort: 3306
+#       protocol: TCP
+#   type: NodePort
+# ---
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: mysql
+#   labels:
+#     app: mysql
+# spec:
+#   selector:
+#     matchLabels:
+#       app: mysql
+#   serviceName: mysql
+#   replicas: 2
+#   template:
+#     metadata:
+#       labels:
+#         app: mysql
+#     spec:
+#       containers:
+#         - name: mysql
+#           image: mysql:latest
+#           envFrom:
+#             - configMapRef:
+#                 name: auth-configmap
+#             - secretRef:
+#                 name: auth-secret
+#           ports:
+#             - containerPort: 3306
+#               name: mp3-mysql
+#           volumeMounts:
+#             #  inside container
+#             - mountPath: "/docker-entrypoint-initdb.d/"
+#               name: mysql-initdb
+
+#             - mountPath: "/var/lib/mysql/"
+#               # subpath: "mysql"
+#               name: mysql-persistent-storage
+#       volumes:
+#         - name: mysql-initdb
+#           configMap:
+#             name: mysql-initdb-configmap
+
+#         - name: mysql-persistent-storage
+#           persistentVolumeClaim:
+#             claimName: mysql-pv-claim
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
   labels:
-    app: db
+    app: mysql
+    tier: database
 spec:
+  type: ClusterIP
   selector:
-    app: db
+    app: mysql
+    tier: database
   ports:
-  - port: 3306
-    targetPort: 3306
-    protocol: TCP
-  type: NodePort
-
+    - name: mp3-mysql
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
 
