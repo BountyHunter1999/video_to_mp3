@@ -4,16 +4,16 @@ kind: Deployment
 metadata:
   name: mysql
   labels:
-    app: db
+    app: mysql
     tier: database
 spec:
   selector:
     matchLabels:
-      app: db
+      app: mysql
   template:
     metadata:
       labels:
-        app: db
+        app: mysql
     spec:
       containers:
         - name: mysql

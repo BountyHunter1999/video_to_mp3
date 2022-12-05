@@ -14,7 +14,8 @@ server = Flask(__name__)
 # videos is the db
 # host.minikube.internal gives access to the local host from within a k8s
 # cluster
-server.config["MONGO_URI"] = "mongodb://host.minikube.internal:27017/videos"
+# server.config["MONGO_URI"] = "mongodb://host.minikube.internal:27017/videos"
+server.config["MONGO_URI"] = "mongodb://mongo:27017/videos"
 
 # this wrap our flask application that allows us to interface with
 # mongodb

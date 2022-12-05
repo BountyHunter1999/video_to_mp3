@@ -18,7 +18,7 @@ def token(request):
     )
 
     if response.status_code == 200:
-        # response.txt will have the body the access that this token has
-        return response.txt, None
+        # response.text will have the body the access that this token has
+        return response.text, None
     else:
-        return None, (response.txt, response.status_code)
+        return None, (response.text, response.status_code)
