@@ -30,39 +30,4 @@ spec:
     requests:
       storage: 100Mi
 
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: mysql-initdb-pv-claim
-#   labels:
-#     app: mysql_setup
-#     type: local
-# spec:
-#   storageClassName: manual
-#   capacity:
-#     storage: 100Mi
-#   accessModes:
-#     - ReadWriteOnce
-#   hostPath:
-#     # path: "$(PWD)/src/auth/manifests/init.sql"
-#     path: "/home/mikeyy/My\ Codes/video_to_mp3/src/auth/manifests/init.sql"
-
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   # - name: mysql-pv-claim
-#   #   labels:
-#   #     app: mysql
-#   name: mysql-initdb-pv-claim
-#   labels:
-#     app: mysql
-# spec:
-#   resources:
-#     requests:
-#       storage: 2Gi
-#   storageClassName: manual
-#   accessModes:
-#     - ReadWriteOnce
 

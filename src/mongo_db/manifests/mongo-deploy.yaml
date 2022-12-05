@@ -5,6 +5,7 @@ metadata:
   name: mongo
   labels:
     app: mongo_db
+    tier: mongo-database
 spec:
   selector:
     matchLabels:
@@ -16,27 +17,24 @@ spec:
     spec:
       containers:
       - name: mongo
-        image: mongo:latest
-        env:
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: auth-secret
-                key: MYSQL_PASSWORD
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        image: mongo:4.4.6
+        envFrom:
+          - configMapRef:
+              name: mongo-configmap
+          - secretRef:
+              name: mongo-secret
         ports:
-        - containerPort: 3306
-          name: mp3-mysql
+        - containerPort: 27017
+          name: mp3-mongo
         volumeMounts:
-          - mountPath: "/var/lib/mongo"
-            name: mongo-persistent-storage
+          - mountPath: "/var/lib/mongo/"
+            name: mongo-pv-claim
       volumes:
-        - name: mongo-persistent-storage
-          persistentVolumeClaim:
-            claimName: mongo-pv-claim
+        - name: mongo-pv-claim
+          hostPath:
+            path: "/mnt/mongo"
+          # persistentVolumeClaim:
+          #   claimName: mongo-pv-claim
 
 ---
 apiVersion: v1
@@ -52,6 +50,4 @@ spec:
   - port: 27017
     targetPort: 27017
     protocol: TCP
-  type: NodePort
-
-
+  type: ClusterIP

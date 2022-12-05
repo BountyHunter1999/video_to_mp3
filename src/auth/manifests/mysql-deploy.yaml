@@ -47,6 +47,24 @@ spec:
         - name: mysql-pv-claim
           persistentVolumeClaim:
             claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+    tier: database
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql
+    tier: database
+  ports:
+    - name: mp3-mysql
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
 
 # ---
 # apiVersion: v1
@@ -108,22 +126,4 @@ spec:
 #         - name: mysql-persistent-storage
 #           persistentVolumeClaim:
 #             claimName: mysql-pv-claim
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  labels:
-    app: mysql
-    tier: database
-spec:
-  type: ClusterIP
-  selector:
-    app: mysql
-    tier: database
-  ports:
-    - name: mp3-mysql
-      protocol: TCP
-      port: 3306
-      targetPort: 3306
 
