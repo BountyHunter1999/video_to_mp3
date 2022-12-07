@@ -6,6 +6,7 @@ mysql_pf:
 
 mp3_login:
 	curl -X POST http://mp3converter.com/login -u mikeyy@tokyo.com:Admin123
+	curl -X POST http://localhost:5000/login -u mikeyy@tokyo.com:Admin123
 
 mysql_connect:
 	kubectl run -it --rm --image=mysql:latest --restart=Never mysql-client -- mysql -h mysql -password="password"

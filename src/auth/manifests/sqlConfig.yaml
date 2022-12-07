@@ -5,11 +5,11 @@ metadata:
   name: mysql-initdb-configmap
 data:
   init.sql: |
-    CREATE USER 'auth_user'@'localhost' IDENTIFIED BY 'Auth123';
+    CREATE USER 'auth_user'@'mysql' IDENTIFIED BY 'Auth123';
 
     CREATE DATABASE auth;
 
-    GRANT ALL PRIVILEGES ON auth.* TO 'auth_user'@'localhost';
+    GRANT ALL PRIVILEGES ON auth.* TO 'auth_user'@'mysql';
 
     USE auth;
 

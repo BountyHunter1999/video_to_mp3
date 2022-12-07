@@ -56,3 +56,7 @@
 - `SHOW DATABASES` to see the available databases
 - `SHOW TABLES` to see the available tables
 - `SELECT * FROM user` to see the available user in the table user
+
+## Need to fix
+
+- the auth/server is using root fix it to use the auth_user and fix the privileges

@@ -10,10 +10,11 @@ mysql = MySQL(server)
 
 # config
 server.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
-server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
+# server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
+server.config["MYSQL_USER"] = "root"
 server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
 server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
-server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
+server.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
 
 print(server.config)
 print("We are working...")
@@ -35,8 +36,9 @@ def login():
 
     # Check db for username and password
     cur = mysql.connection.cursor()
+    # cur = mysql.connect.cursor()
     res = cur.execute(
-        "SELECT email, password FROM user WHERE email=%s", (auth.username)
+        "SELECT email, password FROM user WHERE email=%s", (auth.username,)
     )
 
     if res > 0:
@@ -50,6 +52,7 @@ def login():
             return createJWT(auth.username, os.environ.get("JWT_SECRET"), True)
     else:
         return "Invalid Credentials", 401
+    cur.close()
 
 
 def createJWT(username, secret, is_admin):

@@ -4,16 +4,16 @@ kind: Deployment
 metadata:
   name: mysql
   labels:
-    app: mysql
-    tier: database
+    app: db
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: db
   template:
     metadata:
       labels:
-        app: mysql
+        app: db
     spec:
       containers:
         - name: mysql
@@ -30,7 +30,7 @@ spec:
           #     cpu: "600m"
           ports:
             - containerPort: 3306
-              name: mp3-mysql
+              name: mysql
           volumeMounts:
             #  inside container
             - mountPath: "/docker-entrypoint-initdb.d/"
@@ -53,15 +53,14 @@ kind: Service
 metadata:
   name: mysql
   labels:
-    app: mysql
-    tier: database
+    app: db
 spec:
-  type: ClusterIP
+# we access our database via this service
+  type: LoadBalancer
   selector:
-    app: mysql
-    tier: database
+    app: db
   ports:
-    - name: mp3-mysql
+    - name: mysql
       protocol: TCP
       port: 3306
       targetPort: 3306
