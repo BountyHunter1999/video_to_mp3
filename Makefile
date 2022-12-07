@@ -4,9 +4,21 @@ all: |
 mysql_pf: 
 	kubectl port-forward mysql-0 3306:3306
 
-mp3_login:
-	curl -X POST http://mp3converter.com/login -u mikeyy@tokyo.com:Admin123
-	curl -X POST http://localhost:5000/login -u mikeyy@tokyo.com:Admin123
+gateway_login:
+	curl -X POST http://localhost:8080/login -u mikeyy@tokyo.com:Admin123
+
+video_upload:
+	curl -X POST -F "file=@./Funny_rabbit.mp4" \
+	 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2V5eUB0b2t5by5jb20iLCJleHAiOjE2NzA0NzE0MDUsImlhdCI6MTY3MDM4NTAwNSwiYWRtaW4iOnRydWV9.WoxFjtcI69yzsBWizdtezuK1jEKxA_lbP018jR431eE' \
+	 http://localhost:8080/upload
+
+scale_down:
+	kubectl scale deployment --replicas=1 gateway
+	kubectl scale deployment --replicas=1 auth
+	kubectl scale deployment --replicas=1 converter
+
+gateway_logs:
+	kubectl logs -f gateway
 
 mysql_connect:
 	kubectl run -it --rm --image=mysql:latest --restart=Never mysql-client -- mysql -h mysql -password="password"

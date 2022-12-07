@@ -14,7 +14,8 @@ from convert import to_mp3
 
 def main():
     # for mongo db host in our local machine
-    client = MongoClient("host.minikube.internal", 27017)
+    # client = MongoClient("host.minikube.internal", 27017)
+    client = MongoClient("mongodb", 27017)
     # the above instance of mongoclient will give us access to
     # dbs we have in our mongo database
     db_videos = client.videos
@@ -31,6 +32,8 @@ def main():
         pika.ConnectionParameters(host="rabbitmq")
     )
     channel = connection.channel()
+    
+    channel.queue_declare(queue="video")
 
     def callback(ch, method, properties, body):
         err = to_mp3.start(body, fs_videos, fs_mp3, ch)
