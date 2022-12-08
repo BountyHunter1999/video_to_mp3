@@ -19,7 +19,8 @@ def upload(f, fs, channel, access):
     try:
         # if put is successful a file id object is returned
         fid = fs.put(f)
-    except:  # noqa
+    except Exception as err:  # noqa
+        print(err)
         return "Internal Server Error", 500
 
     # if file was uploaded successfully

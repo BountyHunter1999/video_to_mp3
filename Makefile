@@ -4,12 +4,15 @@ all: |
 mysql_pf: 
 	kubectl port-forward mysql-0 3306:3306
 
+gatewayy_pf:
+	kubectl port-forward services/gateway 8080:8080
+
 gateway_login:
 	curl -X POST http://localhost:8080/login -u mikeyy@tokyo.com:Admin123
 
 video_upload:
 	curl -X POST -F "file=@./Funny_rabbit.mp4" \
-	 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2V5eUB0b2t5by5jb20iLCJleHAiOjE2NzA0NzE0MDUsImlhdCI6MTY3MDM4NTAwNSwiYWRtaW4iOnRydWV9.WoxFjtcI69yzsBWizdtezuK1jEKxA_lbP018jR431eE' \
+	 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2V5eUB0b2t5by5jb20iLCJleHAiOjE2NzA1NTg5MjUsImlhdCI6MTY3MDQ3MjUyNSwiYWRtaW4iOnRydWV9.FMC7hOaLeSOEWHF-Byx2uD2H3itVyDK4JveSPntrevI' \
 	 http://localhost:8080/upload
 
 scale_down:

@@ -57,6 +57,22 @@
 - `SHOW TABLES` to see the available tables
 - `SELECT * FROM user` to see the available user in the table user
 
+## See if our mp3 are in mongodb
+
+- get into the mongodb container
+- `mongo` to enter into its shell
+- `show databases` we can see mp3 and videos there
+- `use mp3` > `show collections` we can see fs.chunks and fs.files
+        - with gridsfs the actual file data is stored in chunks and
+        - the files will have reference simply a metadata for a collection
+                of chunks
+-
+
 ## Need to fix
 
 - the auth/server is using root fix it to use the auth_user and fix the privileges
+
+## Keep in mind
+
+- if the rabbitmq pod goes down or restarts the gateway uses the same old rabbitmq host using the rabbitmq service name and so when we try to upload a video it will return Internal Server Error.
+- so we must restart the gateway service too.
