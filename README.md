@@ -57,6 +57,12 @@
 - `SHOW TABLES` to see the available tables
 - `SELECT * FROM user` to see the available user in the table user
 
+### Later on
+
+- update the email to an actual email so u can download
+- `UPDATE user SET email = "your_email@gmail.com"`
+- get a new token after you do this
+
 ## See if our mp3 are in mongodb
 
 - get into the mongodb container
@@ -66,7 +72,14 @@
         - with gridsfs the actual file data is stored in chunks and
         - the files will have reference simply a metadata for a collection
                 of chunks
--
+- `db.fs.files.find()`: we'll see all of the objects that we have stored
+- `db.fs.files.find("_id": ObjectId("object's id"))`
+
+### Download files from mongodb
+
+- `mongofiles --db=mp3 get_id --local=test.mp3 '{"$oid": "object's id"}'`
+- we will look in mp3 database, get the object by id
+- want the local file to be named test.mp3
 
 ## Need to fix
 

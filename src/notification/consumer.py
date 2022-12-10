@@ -3,28 +3,9 @@ import sys
 import os
 import time
 
-from pymongo import MongoClient
-
-# we need to get the video files from mongodb
-# and also upload the mp3 files into mongodb
-import gridfs
-
-from convert import to_mp3
-
+from send import email
 
 def main():
-    # for mongo db host in our local machine
-    # client = MongoClient("host.minikube.internal", 27017)
-    client = MongoClient("mongo", 27017)
-    # the above instance of mongoclient will give us access to
-    # dbs we have in our mongo database
-    db_videos = client.videos
-    db_mp3 = client.mp3
-
-    # gridfs
-    fs_videos = gridfs.GridFS(db_videos)
-    fs_mp3 = gridfs.GridFS(db_mp3)
-
     # rabbitmq connection
     connection = pika.BlockingConnection(
         # service name will resolve into host ip for our
@@ -37,7 +18,7 @@ def main():
     channel.queue_declare(queue=os.environ.get("MP3_QUEUE"), durable=True)
 
     def callback(ch, method, properties, body):
-        err = to_mp3.start(body, fs_videos, fs_mp3, ch)
+        err = email.notification(body)
         if err:
             # we didn't receive and process the message so the msg
             # won't be removed from the queue
@@ -48,9 +29,9 @@ def main():
         else:
             ch.basic_ack(delivery_tag=method.delivery_tag)
 
-    # configuration to consume our messages from our video queue
+    # configuration to consume our messages from our mp3 queue
     channel.basic_consume(
-        queue=os.environ.get("VIDEO_QUEUE"),
+        queue=os.environ.get("MP3_QUEUE"),
         # a callback fn that is called whenever a msg is pulled from
         # a queue
         on_message_callback=callback,

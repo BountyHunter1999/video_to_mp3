@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+  labels:
+    app: notification
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: notification
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 8
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+      - name: notification
+        image: mikeyy19xx/notification:latest
+        envFrom:
+          - configMapRef:
+              name: notification-configmap
+          - secretRef:
+              name: notification-secret
+        # resources:
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "500m"

@@ -35,6 +35,9 @@ spec:
             path: "/mnt/mongo"
           # persistentVolumeClaim:
           #   claimName: mongo-pv-claim
+        # - name: mongo-db-data
+        #   persistentVolumeClaim:
+        #     claimName: mongo-db-data
 
 ---
 apiVersion: v1

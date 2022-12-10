@@ -12,7 +12,7 @@ gateway_login:
 
 video_upload:
 	curl -X POST -F "file=@./Funny_rabbit.mp4" \
-	 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2V5eUB0b2t5by5jb20iLCJleHAiOjE2NzA1NTg5MjUsImlhdCI6MTY3MDQ3MjUyNSwiYWRtaW4iOnRydWV9.FMC7hOaLeSOEWHF-Byx2uD2H3itVyDK4JveSPntrevI' \
+	 -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2V5eUB0b2t5by5jb20iLCJleHAiOjE2NzA2ODM0MTAsImlhdCI6MTY3MDU5NzAxMCwiYWRtaW4iOnRydWV9.0RS520lzUYJiduCHkZ28_vEeCaCVprnkW3U34UagOZk' \
 	 http://localhost:8080/upload
 
 scale_down:
