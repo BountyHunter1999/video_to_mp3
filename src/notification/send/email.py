@@ -24,7 +24,8 @@ def notification(message):
         msg["To"] = receiver_address
         
         # connect to google's SMTP server
-        session = smtplib.SMTP("smtp.gmail.com")
+        # 587 port for tls and 
+        session = smtplib.SMTP("smtp.gmail.com", 587)
         
         # put the connection to the SMTP server into TLS mode
         # TLS: Transport Layer Security which makes sure our

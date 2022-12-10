@@ -77,9 +77,10 @@
 
 ### Download files from mongodb
 
-- `mongofiles --db=mp3 get_id --local=test.mp3 '{"$oid": "object's id"}'`
+- `mongofiles --db=mp3 get_id --local=mp3s/test.mp3 '{"$oid": "object's id"}'`
 - we will look in mp3 database, get the object by id
-- want the local file to be named test.mp3
+- want the local file to be named test.mp3 in the mp3s directory
+- we can see this in using `minikube ssh` and inside `/mnt/mongodata`
 
 ## Need to fix
 

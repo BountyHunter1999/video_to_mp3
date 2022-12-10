@@ -29,10 +29,18 @@ spec:
         volumeMounts:
           - mountPath: "/var/lib/mongo/"
             name: mongo-pv-claim
+          
+          - name: mongodb-data
+            mountPath: /data
       volumes:
         - name: mongo-pv-claim
           hostPath:
             path: "/mnt/mongo"
+        
+        - name: mongodb-data
+          hostPath:
+            path: /mnt/mongodata
+            type: DirectoryOrCreate
           # persistentVolumeClaim:
           #   claimName: mongo-pv-claim
         # - name: mongo-db-data

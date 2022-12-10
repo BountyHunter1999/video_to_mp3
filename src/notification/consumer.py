@@ -14,8 +14,8 @@ def main():
     )
     channel = connection.channel()
     
-    channel.queue_declare(queue=os.environ.get("VIDEO_QUEUE"), durable=True)
-    channel.queue_declare(queue=os.environ.get("MP3_QUEUE"), durable=True)
+    # channel.queue_declare(queue=os.environ.get("VIDEO_QUEUE"), durable=True)
+    # channel.queue_declare(queue=os.environ.get("MP3_QUEUE"), durable=True)
 
     def callback(ch, method, properties, body):
         err = email.notification(body)
