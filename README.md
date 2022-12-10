@@ -77,10 +77,12 @@
 
 ### Download files from mongodb
 
-- `mongofiles --db=mp3 get_id --local=mp3s/test.mp3 '{"$oid": "object's id"}'`
+- `mongofiles --db=mp3 get_id --local=data/test.mp3 '{"$oid": "object's id"}'`
 - we will look in mp3 database, get the object by id
 - want the local file to be named test.mp3 in the mp3s directory
 - we can see this in using `minikube ssh` and inside `/mnt/mongodata`
+- we can copy the file using `kubectl cp mongo-579d75fcf-9rv66:data/ $PWD/data`
+        - `mongo-579d75fcf-9rv66` is the pod name
 
 ## Need to fix
 
